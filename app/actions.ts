@@ -221,7 +221,7 @@ export async function createProjectAction(payload: WizardFormData) {
     inspiration_images: payload.inspiration_images
       .map((image, index) => ({ ...image, rank: index + 1 }))
       .slice(0, 8),
-    platform_preference: payload.preferred_platform,
+    platform_preference: payload.platform_preference,
     generated_prompt: generateMasterPrompt(payload)
   };
 
@@ -242,7 +242,7 @@ export async function createProjectAction(payload: WizardFormData) {
       customer_location: cleanPayload.customer_location,
       customer_location_value: cleanPayload.customer_location_value,
       target_customers: cleanPayload.target_customers,
-      preferred_platform: cleanPayload.preferred_platform,
+      platform_preference: cleanPayload.platform_preference,
       business_description: cleanPayload.business_description,
       brand_personality: cleanPayload.brand_personality,
       tone_of_voice: cleanPayload.tone_of_voice,
