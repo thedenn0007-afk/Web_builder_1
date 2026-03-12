@@ -60,7 +60,7 @@ WEBSITE STRUCTURE
 ====================
 Required Pages: ${formatList(data.pages)}
 Required Features: ${formatList(data.features)}
-Preferred Website Platform: ${data.preferred_platform || "Not specified"}
+Preferred Website Platform: ${data.platform_preference || "Not specified"}
 
 ====================
 BRAND & DESIGN

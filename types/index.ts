@@ -30,7 +30,7 @@ export type WebsiteProjectRecord = {
   customer_location: string;
   customer_location_value: string;
   target_customers: string[];
-  preferred_platform: string;
+  platform_preference: string;
   business_description: string;
   brand_personality: string;
   tone_of_voice: string;
@@ -56,7 +56,7 @@ export type WizardFormData = {
   customer_location: string;
   customer_location_value: string;
   target_customers: string[];
-  preferred_platform: string;
+  platform_preference: string;
   business_description: string;
   brand_personality: string;
   tone_of_voice: string;

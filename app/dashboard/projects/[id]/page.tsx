@@ -82,7 +82,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
             </div>
             <div>
               <p className="font-semibold">Preferred platform</p>
-              <p className="text-muted-foreground">{record.preferred_platform}</p>
+              <p className="text-muted-foreground">{record.platform_preference}</p>
             </div>
             <div>
               <p className="font-semibold">Brand assets available</p>

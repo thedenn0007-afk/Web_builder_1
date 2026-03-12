@@ -63,10 +63,10 @@ export function NewProjectWizard() {
   );
 
   useEffect(() => {
-    if (!formData.preferred_platform) {
-      setFormData((current) => ({ ...current, preferred_platform: recommendedPlatform }));
+    if (!formData.platform_preference) {
+      setFormData((current) => ({ ...current, platform_preference: recommendedPlatform }));
     }
-  }, [recommendedPlatform, formData.preferred_platform]);
+  }, [recommendedPlatform, formData.platform_preference]);
 
   useEffect(() => {
     if (formData.color_palette.mode === "auto") {
@@ -215,7 +215,7 @@ export function NewProjectWizard() {
     }
 
     if (stepIndex === 11) {
-      return Boolean(formData.preferred_platform || recommendedPlatform);
+      return Boolean(formData.platform_preference || recommendedPlatform);
     }
 
     if (stepIndex === 12) {
@@ -271,7 +271,7 @@ export function NewProjectWizard() {
       try {
         const result = await createProjectAction({
           ...formData,
-          preferred_platform: formData.preferred_platform || recommendedPlatform
+          platform_preference: formData.platform_preference || recommendedPlatform
         });
         setGeneratedPrompt(result.generatedPrompt);
         setCopyLabel("Copy prompt");
@@ -521,9 +521,9 @@ export function NewProjectWizard() {
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {platformOptions.map((platform) => {
-                    const checked = (formData.preferred_platform || recommendedPlatform) === platform;
+                    const checked = (formData.platform_preference || recommendedPlatform) === platform;
                     return (
-                      <button key={platform} type="button" onClick={() => updateField("preferred_platform", platform)} className={`rounded-2xl border p-4 text-left ${checked ? "border-primary bg-primary/10" : "border-border bg-background"}`}>
+                      <button key={platform} type="button" onClick={() => updateField("platform_preference", platform)} className={`rounded-2xl border p-4 text-left ${checked ? "border-primary bg-primary/10" : "border-border bg-background"}`}>
                         <div className="flex items-start justify-between">
                           <p className="font-semibold">{platform}</p>
                           {checked ? <CheckCircle2 className="h-5 w-5 text-primary" /> : null}

@@ -35,7 +35,7 @@ export const defaultFormValues: WizardFormData = {
   customer_location: "",
   customer_location_value: "",
   target_customers: [],
-  preferred_platform: "",
+  platform_preference: "",
   business_description: "",
   brand_personality: "",
   tone_of_voice: "",
