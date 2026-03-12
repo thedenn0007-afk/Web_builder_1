@@ -5,9 +5,10 @@ Website Blueprint Builder is a production-ready SaaS starter built with Next.js 
 ## Features
 
 - Marketing landing page with hero, feature cards, CTA, and footer
-- Supabase Auth with email/password signup and login
+- Supabase Auth with Google sign-in and verified email/password login
+- Email verification flow with resend verification support
+- Strong password validation and secure password reset flow
 - Flashcard requirement collection flow with progress tracking
-- Prompt generation engine via `generateMasterPrompt()`
 - PostgreSQL project persistence in Supabase
 - Dashboard to view, copy, and delete saved prompts
 - Project detail page for reviewing full prompt output
@@ -22,14 +23,6 @@ Website Blueprint Builder is a production-ready SaaS starter built with Next.js 
 - Supabase Auth + PostgreSQL
 - Vercel deployment
 
-## Project Structure
-
-- `app/`
-- `components/`
-- `db/`
-- `lib/`
-- `types/`
-
 ## Environment Variables
 
 Create a `.env.local` file using `.env.example`.
@@ -37,146 +30,46 @@ Create a `.env.local` file using `.env.example`.
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 ```
 
-Until those variables are added, the landing page will still render, but auth, dashboard, and saving projects will stay unavailable.
-
-Notes:
-
-- `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are required for auth and database access.
-- `SUPABASE_SERVICE_ROLE_KEY` is included for future admin workflows, though the current app uses the authenticated user client for normal product actions.
-
-## Supabase Setup
+## Supabase Auth Setup
 
 1. Create a new Supabase project.
-2. In the Supabase dashboard, open the SQL editor.
-3. Run the schema from [db/schema.sql](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/db/schema.sql).
-4. In Authentication > Providers > Email, enable email/password auth.
-5. Optional but recommended for local testing: disable mandatory email confirmation or configure your SMTP/email templates before testing signup.
-6. Copy the project URL and anon key into `.env.local`.
-7. Restart the Next.js dev server after adding the environment variables.
+2. In Authentication > URL Configuration, set:
+   - Site URL: your production app URL
+   - Redirect URLs:
+     - `http://localhost:3000/auth/callback`
+     - `https://your-domain.com/auth/callback`
+3. In Authentication > Providers, enable Email and Google.
+4. In Google Cloud Console, create OAuth web credentials and add the Supabase Google callback URL shown in Supabase provider settings.
+5. Keep email confirmation enabled for production.
+6. Align Supabase password settings with the app policy: 10+ chars, uppercase, lowercase, number, symbol.
 
-## Local Development
+## Deployment Guide for Vercel
 
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Start the development server:
-
-```bash
-npm run dev
-```
-
-3. Open [http://localhost:3000](http://localhost:3000)
-
-## Database Schema
-
-Tables included in [db/schema.sql](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/db/schema.sql):
-
-- `public.users`
-  - `id`
-  - `email`
-  - `created_at`
-- `public.website_projects`
-  - `id`
-  - `user_id`
-  - `business_name`
-  - `business_type`
-  - `business_description`
-  - `location`
-  - `target_audience`
-  - `website_goal`
-  - `pages`
-  - `features`
-  - `design_style`
-  - `color_preferences`
-  - `brand_assets`
-  - `seo_keywords`
-  - `seo_location`
-  - `competitors`
-  - `platform_preference`
-  - `generated_prompt`
-  - `created_at`
-
-The schema also includes:
-
-- A trigger to mirror `auth.users` into `public.users`
-- Row-level security policies so users only access their own projects
-
-## Prompt Generation
-
-The prompt engine lives in [lib/prompt.ts](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/lib/prompt.ts) and is called by the server action in [app/actions.ts](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/actions.ts).
-
-It uses the captured answers to build a master planning prompt covering:
-
-- Website strategy
-- Page structure and content planning
-- UX/UI recommendations
-- Feature implementation
-- SEO strategy
-- Tech stack and deployment guidance
-- Future improvements
-
-## Example Generated Prompt
-
-```text
-You are an expert web strategist, UX designer, SEO specialist, and full-stack web developer.
-
-Your task is to create a complete website blueprint based on the following business information.
-
-Business Name: Northline Fitness
-Industry / Business Type: Gym
-Business Description:
-A premium neighborhood gym offering personal training, strength classes, and nutrition coaching.
-Business Location:
-Bangalore, India
-Target Audience:
-Young professionals
-Primary Goal:
-Generate leads
-Pages Required:
-Home, About, Services, Testimonials, Contact, Booking
-Required Features:
-Contact form, Booking system, Newsletter signup
-Design Style:
-Bold
-Color Preferences:
-Black & Gold
-Brand Assets Available:
-Logo, trainer photography, and brand voice guide
-Primary Keywords:
-gym in bangalore, personal trainer bangalore, strength classes bangalore
-Target SEO Location:
-Bangalore
-Competitors:
-Cult Fit, local boutique gyms
-Preferred Platform:
-Next.js
-```
-
-## Vercel Deployment
-
-1. Push this project to a Git provider.
+1. Push this project to your Git provider.
 2. Import the repository into Vercel.
-3. Add the environment variables from `.env.local` into the Vercel project settings.
-4. Deploy.
+3. Add all environment variables from `.env.local`.
+4. Set `NEXT_PUBLIC_APP_URL` to your final production domain.
+5. Deploy and then update Supabase Auth redirect URLs with the production callback URL.
 
-Vercel will automatically detect the Next.js project. The included `vercel.json` is intentionally minimal because Next.js handles the build pipeline natively.
+## Monitoring and Launch Readiness
+
+Before launch, review:
+
+- Supabase Auth logs for verification, OAuth, and reset-email behavior
+- Vercel function logs for callback and auth action failures
+- analytics/error monitoring such as Sentry, PostHog, or Vercel Analytics
+- Terms of Service and Privacy Policy placeholder pages, replacing them with legal copy
+- metadata, preview image, and favicon/app icon assets
 
 ## Key Files
 
-- [app/page.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/page.tsx)
-- [app/new-project/page.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/new-project/page.tsx)
-- [components/forms/new-project-wizard.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/components/forms/new-project-wizard.tsx)
-- [app/dashboard/page.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/dashboard/page.tsx)
+- [app/actions.ts](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/actions.ts)
+- [app/auth/callback/route.ts](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/app/auth/callback/route.ts)
+- [components/auth-form.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/components/auth-form.tsx)
+- [components/reset-password-form.tsx](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/components/reset-password-form.tsx)
+- [lib/auth.ts](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/lib/auth.ts)
 - [db/schema.sql](C:/Users/user/OneDrive/Desktop/Tech/Demo websited/Web_builder/db/schema.sql)
-
-## Production Notes
-
-- Configure Supabase site URL and redirect URLs for your deployed Vercel domain.
-- Review password rules and email confirmation settings in Supabase Auth before launch.
-- Consider adding edit/update project flows, audit logging, and analytics as next steps.

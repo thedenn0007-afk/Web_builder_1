@@ -1,9 +1,9 @@
 import { AuthForm } from "@/components/auth-form";
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
+export default function LoginPage({ searchParams }: { searchParams: { error?: string; message?: string; email?: string } }) {
   return (
     <main className="container py-16">
-      <AuthForm mode="login" error={searchParams.error} />
+      <AuthForm mode="login" error={searchParams.error} message={searchParams.message} email={searchParams.email} />
     </main>
   );
 }

@@ -11,9 +11,25 @@ const manrope = Manrope({
   variable: "--font-sans"
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 export const metadata: Metadata = {
-  title: "Website Blueprint Builder",
-  description: "Generate professional website planning prompts with a guided SaaS workflow."
+  metadataBase: appUrl ? new URL(appUrl) : undefined,
+  title: {
+    default: "Website Blueprint Builder",
+    template: "%s | Website Blueprint Builder"
+  },
+  description: "Generate structured website blueprints with secure auth, guided discovery, and AI-ready planning prompts.",
+  openGraph: {
+    title: "Website Blueprint Builder",
+    description: "A production-ready SaaS for collecting website requirements and generating AI-ready master prompts.",
+    type: "website"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Website Blueprint Builder",
+    description: "A production-ready SaaS for collecting website requirements and generating AI-ready master prompts."
+  }
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

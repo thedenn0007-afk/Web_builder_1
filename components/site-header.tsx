@@ -2,25 +2,12 @@ import Link from "next/link";
 
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { getAuthContext } from "@/lib/auth";
 import { hasSupabaseEnv } from "@/lib/env";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function SiteHeader() {
   const supabaseConfigured = hasSupabaseEnv();
-  let user = null;
-
-  if (supabaseConfigured) {
-    const supabase = await createSupabaseServerClient();
-
-    if (supabase) {
-      try {
-        const result = await supabase.auth.getUser();
-        user = result.data.user;
-      } catch {
-        user = null;
-      }
-    }
-  }
+  const auth = await getAuthContext();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
@@ -39,10 +26,13 @@ export async function SiteHeader() {
             <span className="hidden rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-muted-foreground sm:inline-flex">
               Add Supabase env vars to enable auth
             </span>
-          ) : user ? (
-            <form action={signOutAction}>
-              <Button type="submit" variant="outline">Sign Out</Button>
-            </form>
+          ) : auth.user ? (
+            <>
+              {!auth.isVerified && auth.user.email ? <Button asChild variant="ghost"><Link href={`/verify-email?email=${encodeURIComponent(auth.user.email)}`}>Verify Email</Link></Button> : null}
+              <form action={signOutAction}>
+                <Button type="submit" variant="outline">Sign Out</Button>
+              </form>
+            </>
           ) : (
             <>
               <Button asChild variant="ghost"><Link href="/login">Login</Link></Button>
