@@ -43,7 +43,7 @@ function parseCustomEntries(input: string) {
 
 function formatPaletteSummary(formData: WizardFormData) {
   const palette = formData.color_palette;
-  return `${palette.name} � ${palette.primary} / ${palette.secondary} / ${palette.tertiary}`;
+  return `${palette.name} - ${palette.primary} / ${palette.secondary} / ${palette.tertiary}`;
 }
 
 export function NewProjectWizard() {
@@ -311,7 +311,7 @@ export function NewProjectWizard() {
           </div>
           <div className="space-y-3 text-sm text-muted-foreground">
             <p className="font-medium text-foreground">Live summary</p>
-            <p>{formData.business_name || "Unnamed project"} � {formData.business_type || "Business type pending"}</p>
+            <p>{formData.business_name || "Unnamed project"} - {formData.business_type || "Business type pending"}</p>
             <p>{formData.design_styles.length ? formData.design_styles.join(", ") : "Design styles pending"}</p>
             <p>{formatPaletteSummary(formData)}</p>
           </div>
@@ -377,8 +377,8 @@ export function NewProjectWizard() {
                 {Array.isArray(formData[currentQuestion.question_id as keyof WizardFormData]) ? (
                   <div className="flex flex-wrap gap-2">
                     {(formData[currentQuestion.question_id as keyof WizardFormData] as string[]).map((item) => (
-                      <button key={item} type="button" onClick={() => removeChip(currentQuestion.question_id as keyof WizardFormData, item)} className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-foreground">
-                        {item} �
+                      <button key={item} x
+                        {item} x
                       </button>
                     ))}
                   </div>
@@ -452,7 +452,7 @@ export function NewProjectWizard() {
                         <div className="flex items-center justify-between gap-4">
                           <div>
                             <p className="font-semibold">{palette.name}</p>
-                            <p className="text-sm text-muted-foreground">{palette.primary} � {palette.secondary} � {palette.tertiary}</p>
+                            <p className="text-sm text-muted-foreground">{palette.primary} - {palette.secondary} - {palette.tertiary}</p>
                           </div>
                           <div className="flex gap-2">
                             {[palette.primary, palette.secondary, palette.tertiary].map((color) => <span key={color} className="h-8 w-8 rounded-full border" style={{ backgroundColor: color }} />)}
@@ -554,7 +554,7 @@ export function NewProjectWizard() {
                 <div className="space-y-4">
                   {formData.inspiration_images.map((image, index) => (
                     <div key={image.id} className="grid gap-4 rounded-2xl border border-border bg-background p-4 md:grid-cols-[96px_1fr_auto] md:items-center">
-                      <img src={image.preview} alt={image.name} className="h-24 w-24 rounded-xl object-cover" />
+                      <div className="relative h-24 w-24 overflow-hidden rounded-xl"><Image src={image.preview} alt={image.name} fill sizes="96px" className="object-cover" unoptimized /></div>
                       <div className="space-y-3">
                         <div>
                           <p className="font-semibold">{image.name}</p>
