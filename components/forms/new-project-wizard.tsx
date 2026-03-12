@@ -351,8 +351,10 @@ export function NewProjectWizard() {
                 <div className="grid gap-3 sm:grid-cols-2">
                   {currentQuestion.options.map((option) => {
                     const field = currentQuestion.question_id as keyof WizardFormData;
-                    const value = formData[field];
-                    const checked = Array.isArray(value) ? value.includes(option) : value === option;
+                    const rawValue = formData[field];
+                    const selectedValues = Array.isArray(rawValue) ? (rawValue as string[]) : [];
+                    const selectedValue = typeof rawValue === "string" ? rawValue : "";
+                    const checked = Array.isArray(rawValue) ? selectedValues.includes(option) : selectedValue === option;
 
                     return (
                       <button
