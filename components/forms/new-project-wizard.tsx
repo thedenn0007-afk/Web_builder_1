@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { ArrowDown, ArrowUp, CheckCircle2, ChevronLeft, ChevronRight, Copy, ImagePlus, Loader2, Sparkles, Trash2 } from "lucide-react";
 
@@ -377,7 +378,12 @@ export function NewProjectWizard() {
                 {Array.isArray(formData[currentQuestion.question_id as keyof WizardFormData]) ? (
                   <div className="flex flex-wrap gap-2">
                     {(formData[currentQuestion.question_id as keyof WizardFormData] as string[]).map((item) => (
-                      <button key={item} x
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => removeChip(currentQuestion.question_id as keyof WizardFormData, item)}
+                        className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-foreground"
+                      >
                         {item} x
                       </button>
                     ))}
@@ -455,7 +461,9 @@ export function NewProjectWizard() {
                             <p className="text-sm text-muted-foreground">{palette.primary} - {palette.secondary} - {palette.tertiary}</p>
                           </div>
                           <div className="flex gap-2">
-                            {[palette.primary, palette.secondary, palette.tertiary].map((color) => <span key={color} className="h-8 w-8 rounded-full border" style={{ backgroundColor: color }} />)}
+                            {[palette.primary, palette.secondary, palette.tertiary].map((color) => (
+                              <span key={color} className="h-8 w-8 rounded-full border" style={{ backgroundColor: color }} />
+                            ))}
                           </div>
                         </div>
                       </button>
@@ -554,14 +562,18 @@ export function NewProjectWizard() {
                 <div className="space-y-4">
                   {formData.inspiration_images.map((image, index) => (
                     <div key={image.id} className="grid gap-4 rounded-2xl border border-border bg-background p-4 md:grid-cols-[96px_1fr_auto] md:items-center">
-                      <div className="relative h-24 w-24 overflow-hidden rounded-xl"><Image src={image.preview} alt={image.name} fill sizes="96px" className="object-cover" unoptimized /></div>
+                      <div className="relative h-24 w-24 overflow-hidden rounded-xl">
+                        <Image src={image.preview} alt={image.name} fill sizes="96px" className="object-cover" unoptimized />
+                      </div>
                       <div className="space-y-3">
                         <div>
                           <p className="font-semibold">{image.name}</p>
                           <p className="text-sm text-muted-foreground">Rank #{index + 1}</p>
                         </div>
                         <select value={image.tag} onChange={(event) => updateImage(image.id, { tag: event.target.value })} className="h-11 w-full rounded-xl border border-input bg-background px-4 text-sm">
-                          {imageTags.map((tag) => <option key={tag} value={tag}>{tag}</option>)}
+                          {imageTags.map((tag) => (
+                            <option key={tag} value={tag}>{tag}</option>
+                          ))}
                         </select>
                       </div>
                       <div className="flex gap-2 md:flex-col">
@@ -616,4 +628,3 @@ export function NewProjectWizard() {
     </div>
   );
 }
-
