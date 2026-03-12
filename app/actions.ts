@@ -221,7 +221,7 @@ export async function createProjectAction(payload: WizardFormData) {
     inspiration_images: payload.inspiration_images
       .map((image, index) => ({ ...image, rank: index + 1 }))
       .slice(0, 8),
-    preferred_platform: payload.preferred_platform,
+    platform_preference: payload.preferred_platform,
     generated_prompt: generateMasterPrompt(payload)
   };
 
