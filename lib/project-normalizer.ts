@@ -70,7 +70,7 @@ export function normalizeProjectRecord(project: Record<string, unknown>): Websit
     customer_location: String(project.customer_location || project.location || "Not specified"),
     customer_location_value: String(project.customer_location_value || ""),
     target_customers: toStringArray(project.target_customers),
-    platform_preference: String(project.platform_preference || project.preferred_platform || "Not specified"),
+    platform_preference: String(project.platform_preference || "Not specified"),
     business_description: String(project.business_description || ""),
     brand_personality: String(project.brand_personality || ""),
     tone_of_voice: String(project.tone_of_voice || ""),

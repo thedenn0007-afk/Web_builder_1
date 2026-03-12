@@ -40,7 +40,7 @@ create table if not exists public.website_projects (
   customer_location text not null default '',
   customer_location_value text not null default '',
   target_customers text[] not null default '{}',
-  preferred_platform text not null,
+  platform_preference text not null,
   business_description text not null default '',
   brand_personality text not null default '',
   tone_of_voice text not null default '',
